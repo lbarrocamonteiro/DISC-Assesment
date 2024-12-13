@@ -1,0 +1,122 @@
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F4F8;
+    color: #333;
+}
+
+header{
+    background-color: #003366;
+    color: #FFFFFF;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Coloca o cabeçalho acima de outros elementos */
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 80px 20px 20px; /* Adiciona um padding-top maior para evitar sobreposição */
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: #003366;
+}
+
+button {
+    background-color: #6699CC;
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0055A4;
+}
+
+input[type="text"], input[type="email"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+}
+
+.instructions {
+    background-color: #E0E7F1;
+    padding: 15px;
+    border-left: 4px solid #003366;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.question-card {
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #FAFAFA;
+}
+
+.question-card h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #003366;
+}
+
+.question-options {
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-group {
+    width: 48%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.charts-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.chart-wrapper {
+    width: 30%;
+    text-align: center;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.section-title {
+    font-size: 18px;
+    color: #6699CC;
+    margin-bottom: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+footer p{
+    text-align: center;
+}

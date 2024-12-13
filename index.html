@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assessment DISC para análise de perfil comportamental baseado nas dimensões Dominância, Influência, Estabilidade e Conformidade.">
+    <title>Assessment DISC</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@latest"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header role="banner">
+        <h1>Assessment DISC</h1>
+    </header>
+
+    <main>
+        <!-- Tela Inicial -->
+        <section id="intro" class="container" aria-labelledby="intro-title">
+            <h2 id="intro-title">Descubra o Seu Perfil Comportamental com o Assessment DISC</h2>
+            <article class="instructions">
+                <p>O Assessment DISC é uma ferramenta que permite explorar o seu perfil comportamental, identificando como age e reage em diferentes situações. Baseado no modelo de William Moulton Marston, analisa quatro dimensões principais: <strong>Dominância</strong>, <strong>Influência</strong>, <strong>Estabilidade</strong>, e <strong>Conformidade</strong>.</p>
+                <p>Ao compreender melhor as suas forças e áreas de desenvolvimento, poderá adotar estratégias mais eficazes para melhorar a comunicação, lidar com desafios e adaptar-se a diferentes contextos.</p>
+                <p>Participar neste processo é investir no <strong>autoconhecimento</strong> e no fortalecimento das suas competências.</p>
+            </article>
+            <form id="userInfoForm" aria-label="Informações do Usuário">
+                <fieldset>
+                    <legend>Preencha seus dados</legend>
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+                    <label for="surname">Apelido:</label>
+                    <input type="text" id="surname" name="surname" placeholder="Digite seu apelido" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+                </fieldset>
+                <button type="submit" onclick="startAssessment()">Iniciar Assessment</button>
+            </form>
+        </section>
+        <!-- Questionário -->
+        <section id="assessmentContainer" class="container" style="display: none;" aria-labelledby="assessment-title">
+            <h2 id="assessment-title">Questionário DISC</h2>
+            <form id="assessmentForm" aria-label="Questionário de perfil comportamental">
+                <div id="questionsContainer"></div>
+                <button type="submit" onclick="generateReport(new FormData(document.getElementById('assessmentForm')))">Gerar Relatório</button>
+            </form>
+        </section>
+
+        <!-- Relatório -->
+        <section id="report" class="container" style="display: none;" aria-labelledby="report-title">
+            <h2 id="report-title">Relatório do Perfil DISC</h2>
+            <p><strong>Nome:</strong> <span id="userName"></span></p>
+            <p><strong>Apelido:</strong> <span id="userSurname"></span></p>
+            <p><strong>Email:</strong> <span id="userEmail"></span></p>
+            <p><strong>Data:</strong> <span id="userDate"></span></p>
+
+            <!-- Gráficos -->
+            <section class="charts-container" aria-label="Gráficos de resultados">
+                <article class="chart-wrapper" aria-labelledby="chart-natural-title">
+                    <h3 id="chart-natural-title">Comportamento Natural</h3>
+                    <canvas id="naturalChart"></canvas>
+                </article>
+                <article class="chart-wrapper" aria-labelledby="chart-adapted-title">
+                    <h3 id="chart-adapted-title">Comportamento Adaptado</h3>
+                    <canvas id="adaptedChart"></canvas>
+                </article>
+                <article class="chart-wrapper" aria-labelledby="chart-comparison-title">
+                    <h3 id="chart-comparison-title">Comparação</h3>
+                    <canvas id="comparisonChart"></canvas>
+                </article>
+            </section>
+
+            <!-- Resumo -->
+            <section>
+                <h3>Resumo do Perfil</h3>
+                <p id="profileSummary"></p>
+            </section>
+
+            <!-- Motivadores -->
+            <section>
+                <h3>Motivadores</h3>
+                <ul id="motivators"></ul>
+            </section>
+
+            <!-- Desmotivadores -->
+            <section>
+                <h3>Desmotivadores</h3>
+                <ul id="demotivators"></ul>
+            </section>
+
+            <!-- Ambiente Ideal de Trabalho -->
+            <section>
+                <h3>Ambiente Ideal de Trabalho</h3>
+                <ul id="idealWorkEnvironment"></ul>
+            </section>
+
+            <!-- Sugestões de Desenvolvimento -->
+            <section>
+                <h3>Sugestões de Desenvolvimento</h3>
+                <ul id="developmentSuggestions">
+                </ul>
+            </section>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2024 Assessment DISC. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
