@@ -12,7 +12,7 @@
 </head>
 <body>
     <header role="banner">
-        <h1>Assessment DISC</h1>
+        <h1 onclick="changeToUserInfoPage()">Assessment DISC</h1>
     </header>
 
     <main>
@@ -34,7 +34,7 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" placeholder="Digite seu email" required>
                 </fieldset>
-                <button type="submit" onclick="startAssessment()">Iniciar Assessment</button>
+                <button type="button" onclick="startAssessment()">Iniciar Assessment</button>
             </form>
         </section>
         <!-- Questionário -->
@@ -42,7 +42,7 @@
             <h2 id="assessment-title">Questionário DISC</h2>
             <form id="assessmentForm" aria-label="Questionário de perfil comportamental">
                 <div id="questionsContainer"></div>
-                <button type="submit" onclick="generateReport(new FormData(document.getElementById('assessmentForm')))">Gerar Relatório</button>
+                <button type="button" onclick="changeToReportPage()">Gerar Relatório</button>
             </form>
         </section>
 
@@ -55,19 +55,19 @@
             <p><strong>Data:</strong> <span id="userDate"></span></p>
 
             <!-- Gráficos -->
-            <section class="charts-container" aria-label="Gráficos de resultados">
-                <article class="chart-wrapper" aria-labelledby="chart-natural-title">
-                    <h3 id="chart-natural-title">Comportamento Natural</h3>
+            <section class="chart-container">
+                <div class="chart-wrapper">
+                    <h3>Comportamento Natural</h3>
                     <canvas id="naturalChart"></canvas>
-                </article>
-                <article class="chart-wrapper" aria-labelledby="chart-adapted-title">
-                    <h3 id="chart-adapted-title">Comportamento Adaptado</h3>
+                </div>
+                <div class="chart-wrapper">
+                    <h3>Comportamento Adaptado</h3>
                     <canvas id="adaptedChart"></canvas>
-                </article>
-                <article class="chart-wrapper" aria-labelledby="chart-comparison-title">
-                    <h3 id="chart-comparison-title">Comparação</h3>
+                </div>
+                <div class="chart-wrapper comparison-chart">
+                    <h3>Comparação</h3>
                     <canvas id="comparisonChart"></canvas>
-                </article>
+                </div>
             </section>
 
             <!-- Resumo -->
