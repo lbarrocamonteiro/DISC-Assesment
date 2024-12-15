@@ -13,8 +13,6 @@ header{
     padding: 20px;
     text-align: center;
     font-size: 24px;
-    position: fixed;
-    top: 0;
     width: 100%;
     z-index: 1000; /* Coloca o cabeçalho acima de outros elementos */
 }
@@ -29,7 +27,7 @@ header > h1 {
 .container {
     max-width: 800px;
     margin: 20px auto;
-    padding: 80px 20px 20px; /* Adiciona um padding-top maior para evitar sobreposição */
+    padding: 20px 20px 20px; /* Adiciona um padding-top maior para evitar sobreposição */
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

@@ -172,6 +172,8 @@ function loadLocalData() {
     }
 }
 
+window.onload = loadLocalData();
+
 // Fix processResponses to return valid data or errors gracefully
 function processResponses(formData) {
     let natural_scores = { D: 0, I: 0, S: 0, C: 0 };
@@ -538,8 +540,6 @@ function getTextForScore(score, texts) {
         return texts.veryHigh;
     }
 }
-
-
 
 document.getElementById('userInfoForm').addEventListener('submit', function (event) {
     event.preventDefault();
