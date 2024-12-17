@@ -1,5 +1,5 @@
 let userData = {};
-
+let chartInstances = [];
 const workEnvironmentTexts = {
     D: {
         low: "Prefere ambientes onde os conflitos são mínimos e as decisões são tomadas em consenso.",
@@ -114,7 +114,6 @@ function loadLocalData() {
                     document.getElementById('name').value = userData.name;
                     document.getElementById('surname').value = userData.surname;
                     document.getElementById('email').value = userData.email;
-                    
                 } catch (error) {
                     console.error('Error parsing responses from localStorage')
                 }
@@ -164,8 +163,10 @@ function loadLocalData() {
                 formData.append(key, savedResponses[key]);
             }
 
-            const scores = processResponses(formData);
+            let scores = processResponses(formData);
             if (scores) {
+                // Process percentage scores
+                console.log(scores)
                 generateReport(scores.natural_scores, scores.adaptado_scores);
             }
         }
@@ -210,6 +211,15 @@ function processResponses(formData) {
         if (cWords.includes(most)) natural_scores.C += 1;
         if (cWords.includes(least)) adaptado_scores.C += 1;
     }
+
+    // Normalize scores (divide by total number of questions)
+    Object.keys(natural_scores).forEach(key => {
+        natural_scores[key] = ((natural_scores[key] / 24) * 100).toFixed(2);
+    });
+
+    Object.keys(adaptado_scores).forEach(key => {
+        adaptado_scores[key] = ((adaptado_scores[key] / 24) * 100).toFixed(2);
+    });
 
     return { natural_scores, adaptado_scores };
 }
@@ -381,9 +391,7 @@ async function submitForm(natural_scores, adaptado_scores) {
     document.getElementById("userSurname").innerText = userData.surname;
     document.getElementById("userEmail").innerText = userData.email;
     document.getElementById("userDate").innerText = userData.date;
-    // Create a FormData object from the form
 
-    // Convert the FormData object to JSON (optional, if your Cloud Function expects JSON)
     let jsonData = {
         "Name": userData.name,
         "Surname": userData.surname,
@@ -391,23 +399,24 @@ async function submitForm(natural_scores, adaptado_scores) {
         "Date": userData.date
     };
 
-    Object.entries(natural_scores).forEach((key, value) => {
-        jsonData[key+" Natural"] = value;
+    Object.entries(natural_scores).forEach((value, key) => {
+        jsonData[value[0]+" Natural"] = value[1];
     });
 
-    Object.entries(adaptado_scores).forEach((key, value) => {
-        jsonData[key+" Adaptado"] = value;
+    Object.entries(adaptado_scores).forEach((value, key) => {
+        jsonData[value[0]+" Adaptado"] = value[1];
     });
+
+    console.log(jsonData);
 
     try {
         // Send the form data to the Cloud Function
         const response = await fetch('https://europe-west9-luis-disc-form.cloudfunctions.net/export_to_gs', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'no-cors'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(jsonData), // If your Cloud Function expects raw FormData, use `formData` directly
+            body: JSON.stringify(jsonData),
         });
 
         localStorage.removeItem('userData');
@@ -415,15 +424,13 @@ async function submitForm(natural_scores, adaptado_scores) {
         // Handle the response
         if (response.ok) {
             const result = await response.json();
-            alert('Form submitted successfully!');
             console.log(result);
         } else {
             const error = await response.text();
-            alert('Error submitting form: ' + error);
+            console.error('Error submitting form:', error);
         }
     } catch (error) {
         console.error('Error submitting form:', error);
-        alert('There was an issue submitting your form.');
     }
 }
 
@@ -442,43 +449,77 @@ function generateReport(natural_scores, adaptado_scores) {
     const chartLabels = ["Dominância", "Influência", "Estabilidade", "Conformidade"];
     const chartColors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"];
 
-    const createChart = (contextId, label, chartData) => {
+    const createChart = (contextId, label, data) => {
         const ctx = document.getElementById(contextId).getContext("2d");
+
         new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: label,
-                data: chartData,
-                backgroundColor: chartColors
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    min: 0,
-                    max: 30
-                }
+            type: "bar",
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    backgroundColor: chartColors
+                }]
             },
-            plugins: {
-                datalabels: {
-                    anchor: 'end',
-                    align: 'start',
-                    formatter: (value) => value,
-                    color: '#444'
-                },
-                legend: {
-                    display: false
+            options: {
+                // scales: {
+                //     y: {
+                //         min: 0,
+                //         max: 100
+                //     }
+                // },
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'start',
+                        formatter: (value) => value,
+                        color: '#444'
+                    },
+                    legend: {
+                        display: false
+                    }
                 }
             }
-        }
-    });
+        });
+        
     };
 
     createChart("naturalChart", "Comportamento Natural", chartData);
     createChart("adaptedChart", "Comportamento Adaptado", chartData2);
-    createChart("comparisonChart", "Comparação", chartData.map((item, index) => item - chartData2[index]));
+
+    const ctx = document.getElementById("comparisonChart").getContext("2d");
+    new Chart(ctx, {
+        type: "radar",
+        data: {
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: "Comportamento Natural",
+                    data: chartData,
+                    backgroundColor: "rgba(5, 150, 0, 0.2)"
+                },
+                {
+                    label: "Comportamento Adaptado",
+                    data: chartData2,
+                    backgroundColor: "rgba(0, 87, 168, 0.2)"
+                }
+            ]
+        },
+        options: {
+            // scales: {
+            //     r: {
+            //         min: 0,
+            //         max: 100
+            //     }
+            // },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
 
     const workEnvironment = getHighestScoreDescription(natural_scores, workEnvironmentTexts);
     document.getElementById("profileSummary").innerText = workEnvironment;
@@ -494,8 +535,9 @@ function generateReport(natural_scores, adaptado_scores) {
     document.getElementById("developmentSuggestions").innerHTML = developmentSuggestions.map(item => `<li>${item}</li>`).join("");
 
     const idealEnvironment = determineWorkEnvironment(natural_scores);
-    console.log(idealEnvironment)
     document.getElementById("idealWorkEnvironment").innerHTML = idealEnvironment.map(item => `<li>${item}</li>`).join("");
+
+    submitForm(natural_scores, adaptado_scores);
 
 }
 
@@ -561,26 +603,29 @@ function getRandomElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
+function resetLocalStorage() {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('responses');
+    localStorage.removeItem('page');
+}
+
 function testGenerateReport() {
     // Test user data
     userData = {
         name: "Teste",
         surname: "Usuário",
         email: "teste@exemplo.com",
-        date: new Date().toLocaleDateString()
+        date: new Date().toISOString().replace("T", " ").split(".")[0].toString().replace("'", ""),
     };
 
-    // Word categories for testing
-    const responses = {
-        D: ["Agressivo", "Decidido", "Autoritário", "Competitivo", "Determinado", "Confrontador", "Decisivo", "Independente", "Audacioso", "Assertivo", "Corajoso", "Orientado a resultados", "Líder natural", "Proativo", "Focado", "Persistente", "Organizado", "Pragmático", "Audaz", "Competitivo", "Ambicioso", "Decisivo", "Direto", "Focado em Resultados"],
-        I: ["Amigável", "Persuasivo", "Sociável", "Entusiasta", "Inspirador", "Carismático", "Influente", "Empático", "Expressivo", "Enérgico", "Espontâneo", "Motivador", "Inspirador", "Entusiasta", "Criativo", "Comunicativo", "Visionário", "Amigável", "Enérgico", "Carismático", "Encantador", "Influenciador", "Entusiasta", "Empático"],
-        S: ["Calmo", "Paciente", "Leal", "Compreensivo", "Tranquilo", "Reservado", "Tolerante", "Fiável", "Sossegado", "Solidário", "Estável", "Apoiante", "Harmonioso", "Acolhedor", "Paciente", "Tolerante", "Calmo", "Leal", "Flexível", "Metódico", "Paciente", "Estável", "Colaborativo", "Adaptável"],
-        C: ["Meticuloso", "Cuidadoso", "Analítico", "Organizado", "Cauteloso", "Detalhista", "Preciso", "Rigoroso", "Metódico", "Pragmático", "Objetivo", "Estruturado", "Preciso", "Cuidadoso", "Determinante", "Meticuloso", "Perfeccionista", "Disciplinado", "Estratégico", "Cauteloso", "Conservador", "Analítico", "Racional", "Minucioso"]
-    };
+    const dWords = ["Agressivo", "Decidido", "Autoritário", "Competitivo", "Determinado"];
+    const iWords = ["Amigável", "Persuasivo", "Sociável", "Entusiasta", "Inspirador"];
+    const sWords = ["Calmo", "Paciente", "Leal", "Compreensivo", "Tranquilo"];
+    const cWords = ["Meticuloso", "Cuidadoso", "Analítico", "Organizado", "Cauteloso"];
 
     // Generate random responses for testing
     const formData = new FormData();
-    const allWords = [...responses.D, ...responses.I, ...responses.S, ...responses.C];
+    const allWords = [...dWords, ...iWords, ...sWords, ...cWords];
 
     for (let i = 0; i < 24; i++) {
         let most = getRandomElement(allWords);

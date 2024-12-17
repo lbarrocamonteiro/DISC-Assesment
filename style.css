@@ -75,14 +75,11 @@ canvas {
         cursor: pointer;
         font-size: 1em;
     }
-}
 
-/* 
-@media (max-width: 600px) {
-    .chart-wrapper {
-        width: 90%; 
+    .chart-container h3 {
+        font-size: 0.8em;
     }
-} */
+}
 
 
 .charts-container {
