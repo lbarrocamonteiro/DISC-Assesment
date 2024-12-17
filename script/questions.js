@@ -90,6 +90,25 @@ function setupRealTimeSave() {
     inputs.forEach(input => input.addEventListener("change", saveResponseInRealTime));
 }
 
+function validateResponses() {
+    const savedResponses = JSON.parse(localStorage.getItem("responses") || "{}");
+
+    for (let i = 0; i < 24; i++) {
+        const most = savedResponses[`most-${i}`];
+        const least = savedResponses[`least-${i}`];
+
+        if (!most || !least) {
+            alert(`Pergunta ${i + 1} está incompleta!`);
+            return false;
+        }
+
+        if (most === least) {
+            alert(`Os valores "Mais" e "Menos" não podem ser iguais na pergunta ${i + 1}.`);
+            return false;
+        }
+    }
+    return true
+}
 
 // Fix processResponses to return valid data or errors gracefully
 function processResponses() {
@@ -149,4 +168,4 @@ function processResponses() {
 }
 
 
-export { generateQuestions, setupRealTimeSave, loadQuestionResponsesIntoForm, processResponses };
+export { generateQuestions, setupRealTimeSave, loadQuestionResponsesIntoForm, processResponses, validateResponses };
