@@ -80,6 +80,7 @@ function generateQuestions(containerId) {
         `;
         container.appendChild(card);
     });
+    loadQuestionResponsesIntoForm()
     // Add real-time save listeners
     setupRealTimeSave();
 }
@@ -95,13 +96,15 @@ function processResponses() {
 
     const savedResponses = JSON.parse(localStorage.getItem("responses") || "{}");
 
+    console.log(savedResponses)
+
     let natural_scores = { D: 0, I: 0, S: 0, C: 0 };
     let adaptado_scores = { D: 0, I: 0, S: 0, C: 0 };
 
-    const dWords = ["Agressivo", "Decidido", "Autoritário", "Competitivo", "Determinado"];
-    const iWords = ["Amigável", "Persuasivo", "Sociável", "Entusiasta", "Inspirador"];
-    const sWords = ["Calmo", "Paciente", "Leal", "Compreensivo", "Tranquilo"];
-    const cWords = ["Meticuloso", "Cuidadoso", "Analítico", "Organizado", "Cauteloso"];
+    const dWords = ["Agressivo", "Decidido", "Autoritário", "Competitivo", "Determinado", "Confrontador", "Decisivo", "Independente", "Audacioso", "Assertivo", "Corajoso", "Orientado a resultados", "Líder natural", "Proativo", "Focado", "Persistente", "Organizado", "Pragmático", "Audaz", "Competitivo", "Ambicioso", "Decisivo", "Direto", "Focado em Resultados"];
+    const iWords = ["Amigável", "Persuasivo", "Sociável", "Entusiasta", "Inspirador", "Carismático", "Influente", "Empático", "Expressivo", "Enérgico", "Espontâneo", "Motivador", "Inspirador", "Entusiasta", "Criativo", "Comunicativo", "Visionário", "Amigável", "Enérgico", "Carismático", "Encantador", "Influenciador", "Entusiasta", "Empático"];
+    const sWords = ["Calmo", "Paciente", "Leal", "Compreensivo", "Tranquilo", "Reservado", "Tolerante", "Fiável", "Sossegado", "Solidário", "Estável", "Apoiante", "Harmonioso", "Acolhedor", "Paciente", "Tolerante", "Calmo", "Leal", "Flexível", "Metódico", "Paciente", "Estável", "Colaborativo", "Adaptável"];
+    const cWords = ["Meticuloso", "Cuidadoso", "Analítico", "Organizado", "Cauteloso", "Detalhista", "Preciso", "Rigoroso", "Metódico", "Pragmático", "Objetivo", "Estruturado", "Preciso", "Cuidadoso", "Determinante", "Meticuloso", "Perfeccionista", "Disciplinado", "Estratégico", "Cauteloso", "Conservador", "Analítico", "Racional", "Minucioso"];
 
     for (let i = 0; i < 24; i++) {
         const most = savedResponses[`most-${i}`];
