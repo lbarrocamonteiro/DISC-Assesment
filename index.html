@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@latest"></script>
-    <script defer src="script.js"></script>
+    <script type="module" src="script/main.js"></script>
 </head>
 <body>
     <header role="banner">
-        <h1 onclick="changeToUserInfoPage()">Assessment DISC</h1>
+        <h1 id="goToUserInfoPage">Assessment DISC</h1>
     </header>
 
     <main>
@@ -34,15 +34,16 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" placeholder="Digite seu email" required>
                 </fieldset>
-                <button type="button" onclick="startAssessment()">Iniciar Assessment</button>
+                <button type="submit">Iniciar Assessment</button>
             </form>
         </section>
+
         <!-- Questionário -->
         <section id="assessmentContainer" class="container" style="display: none;" aria-labelledby="assessment-title">
             <h2 id="assessment-title">Questionário DISC</h2>
             <form id="assessmentForm" aria-label="Questionário de perfil comportamental">
                 <div id="questionsContainer"></div>
-                <button type="button" onclick="changeToReportPage()">Gerar Relatório</button>
+                <button type="submit">Gerar Relatório</button>
             </form>
         </section>
 
@@ -97,8 +98,7 @@
             <!-- Sugestões de Desenvolvimento -->
             <section>
                 <h3>Sugestões de Desenvolvimento</h3>
-                <ul id="developmentSuggestions">
-                </ul>
+                <ul id="developmentSuggestions"></ul>
             </section>
         </section>
     </main>

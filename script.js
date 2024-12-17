@@ -166,11 +166,32 @@ function loadLocalData() {
             let scores = processResponses(formData);
             if (scores) {
                 // Process percentage scores
-                console.log(scores)
                 generateReport(scores.natural_scores, scores.adaptado_scores);
+                localStorage.setItem("page", "0")
             }
         }
     }
+}
+
+// List of canvas IDs to manage
+const chartCanvasIds = ["naturalChart", "adaptedChart", "ComparisonChart"];
+
+// Function to safely destroy all existing charts
+function destroyAllCharts() {
+    chartCanvasIds.forEach((canvasId) => {
+        const canvas = document.getElementById(canvasId);
+
+        if (chartInstances[canvasId]) {
+            chartInstances[canvasId].destroy();
+            delete chartInstances[canvasId];
+        }
+
+        // Clear the canvas
+        if (canvas) {
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    });
 }
 
 window.onload = loadLocalData();
@@ -304,7 +325,7 @@ function startAssessment() {
         userData.name = name;
         userData.surname = surname;
         userData.email = email;
-        userData.date = new Date().toLocaleDateString();
+        userData.date = new Date().toISOString().replace("T", " ").split(".")[0].toString().replace("'", "");
 
         // Save userData to localStorage
         localStorage.setItem('userData', JSON.stringify(userData));
@@ -386,6 +407,7 @@ function generateQuestions() {
 
 
 async function submitForm(natural_scores, adaptado_scores) {
+    const userData = localStorage.getItem('userData');
     // Select the form element
     document.getElementById("userName").innerText = userData.name;
     document.getElementById("userSurname").innerText = userData.surname;
@@ -409,6 +431,11 @@ async function submitForm(natural_scores, adaptado_scores) {
 
     console.log(jsonData);
 
+    if(!jsonData.Name) {
+        console.log("No user data found");
+        return;
+    }
+
     try {
         // Send the form data to the Cloud Function
         const response = await fetch('https://europe-west9-luis-disc-form.cloudfunctions.net/export_to_gs', {
@@ -419,8 +446,8 @@ async function submitForm(natural_scores, adaptado_scores) {
             body: JSON.stringify(jsonData),
         });
 
-        localStorage.removeItem('userData');
-        localStorage.removeItem('responses');
+        // localStorage.removeItem('userData');
+        // localStorage.removeItem('responses');
         // Handle the response
         if (response.ok) {
             const result = await response.json();
@@ -435,6 +462,7 @@ async function submitForm(natural_scores, adaptado_scores) {
 }
 
 function generateReport(natural_scores, adaptado_scores) {
+    destroyAllCharts();
 
     window.scrollTo({top: 0});
     if(!natural_scores) return;
