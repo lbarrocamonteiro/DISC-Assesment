@@ -3,8 +3,9 @@ import { createChart, destroyAllCharts, createComparisonChart } from "./charts.j
 import { getHighestScoreDescription, determineUserProfile, getDevelopmentSuggestions, determineWorkEnvironment } from './utils.js'
 import { workEnvironmentTexts, motivatorsByDimension, demotivatorsByDimension } from './constants.js'
 import { submitForm } from './cloud_function.js'
+import { downloadPdf, downloadExcel } from './download.js'
 
-function generateReport(natural_scores, adaptado_scores) {
+async function generateReport(natural_scores, adaptado_scores) {
     destroyAllCharts();
 
     if(!natural_scores) {
@@ -46,7 +47,15 @@ function generateReport(natural_scores, adaptado_scores) {
     const idealEnvironment = determineWorkEnvironment(natural_scores, workEnvironmentTexts);
     document.getElementById("idealWorkEnvironment").innerHTML = idealEnvironment.map(item => `<li>${item}</li>`).join("");
 
-    submitForm(natural_scores, adaptado_scores);
+    await submitForm(natural_scores, adaptado_scores);
+
+    const downloadPdfButton = document.getElementById("downloadPdfBtn")
+    downloadPdfButton.addEventListener("click", downloadPdf);
+    downloadPdfButton.removeAttribute("disabled")
+
+    const downloadExcelButton = document.getElementById("downloadExcelBtn")
+    downloadExcelButton.addEventListener("click", () => downloadExcel(natural_scores, adaptado_scores));
+    downloadExcelButton.removeAttribute("disabled")
 }
 
 export { generateReport };

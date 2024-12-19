@@ -1,7 +1,7 @@
 import { saveUserData, loadUserDataIntoForm } from "./userData.js";
 import { processResponses, generateQuestions, loadQuestionResponsesIntoForm, validateResponses } from "./questions.js";
 import { generateReport } from "./reports.js";
-import { testGenerateReport } from "./tests.js";
+import './tests.js'
 
 window.onload = () => {
     if (localStorage.getItem('page') === "0" || !localStorage.getItem('page')) {
@@ -59,3 +59,4 @@ document.getElementById("assessmentForm").addEventListener("submit", (event) => 
     localStorage.setItem("page", "2");
     location.reload();
 });
+

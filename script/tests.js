@@ -64,4 +64,3 @@ function testGenerateReport() {
 
 window.testGenerateReport = testGenerateReport;
 window.resetLocalStorage = resetLocalStorage;
-export { testGenerateReport }

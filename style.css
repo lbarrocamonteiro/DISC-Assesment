@@ -1,4 +1,4 @@
-
+/* General Styles */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
@@ -7,87 +7,77 @@ body {
     color: #333;
 }
 
-header{
+/* Header */
+header {
     background-color: #003366;
     color: #FFFFFF;
     padding: 20px;
     text-align: center;
     font-size: 24px;
     width: 100%;
-    z-index: 1000; /* Coloca o cabeçalho acima de outros elementos */
+    z-index: 1000;
 }
 
 header > h1 {
     display: inline-block;
-    padding: 0;
     cursor: pointer;
     font-size: 1.5em;
 }
 
+/* Containers */
 .container {
     max-width: 800px;
     margin: 20px auto;
-    padding: 20px 20px 20px; /* Adiciona um padding-top maior para evitar sobreposição */
+    padding: 20px;
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.instructions {
+    background-color: #E0E7F1;
+    padding: 15px;
+    border-left: 4px solid #003366;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+#infoPageButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+}
+
+#infoPageButtons > button:last-child {
+    position: absolute;
+    right: 10px;
+    top: 1.1em;
+    border: 1px solid #6699CC;
+    background-color: white;
+    font-size: 0.8em;
+    color: #6699CC;
+    padding: 0.5em;
+    margin: auto 0;
+}
+
+#infoPageButtons > button:last-child:hover {
+    background-color: #6699CC;
+    color: white;
+}
+
+/* Headings */
 h2, h3 {
     color: #003366;
 }
 
-.chart-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+.section-title {
+    font-size: 18px;
+    color: #6699CC;
+    margin-bottom: 10px;
 }
 
-.chart-wrapper {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: calc(50% - 20px); /* Two charts per row on large screens */
-    box-sizing: border-box;
-}
-
-.comparison-chart {
-    width: 50%; /* Comparison chart takes full width */
-}
-
-canvas {
-    width: 50%;
-    height: auto;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .chart-wrapper {
-        width: 90%; /* Full width on small screens */
-    }
-
-    header > h1 {
-        display: inline-block;
-        padding: 0;
-        cursor: pointer;
-        font-size: 1em;
-    }
-
-    .chart-container h3 {
-        font-size: 0.8em;
-    }
-}
-
-
-.charts-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
+/* Buttons */
 button {
     display: block;
     background-color: #6699CC;
@@ -105,6 +95,7 @@ button:hover {
     background-color: #0055A4;
 }
 
+/* Forms */
 input[type="text"], input[type="email"] {
     width: calc(100% - 22px);
     padding: 10px;
@@ -113,14 +104,7 @@ input[type="text"], input[type="email"] {
     border-radius: 5px;
 }
 
-.instructions {
-    background-color: #E0E7F1;
-    padding: 15px;
-    border-left: 4px solid #003366;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
+/* Question Cards */
 .question-card {
     border: 1px solid #E0E0E0;
     border-radius: 5px;
@@ -149,19 +133,62 @@ label {
     margin-bottom: 5px;
 }
 
-.charts-container {
-    display: flex;
-    justify-content: space-around;
+/* Charts */
+
+#report > p {
+    margin: 10px 10px;
 }
 
-.charts-container2 {
+#reportTitleSection {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3em;
+    margin: 5px 10px;
+}
+
+#report-title {
+    display: inline-block;
+    margin: 0;
+}
+
+#downloadButtons {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+#downloadButtons button {
+    margin: 2em 1em;
+    padding: 0.5em 0.5em;
+    font-size: 0.8em;
+}
+
+#downloadButtons button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    font-size: 0.8em;
+}
+
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 10px;
 }
 
 .chart-wrapper {
-    display:block;
+    background: #FFFFFF;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: calc(45% - 10px); /* Two charts per row on large screens */
     text-align: center;
+}
+
+.comparison-chart {
+    width: 50%; /* Comparison chart takes half width */
 }
 
 canvas {
@@ -169,16 +196,49 @@ canvas {
     height: auto;
 }
 
-.section-title {
-    font-size: 18px;
-    color: #6699CC;
-    margin-bottom: 10px;
-}
-
+/* Lists */
 ul {
     padding-left: 20px;
 }
 
-footer p{
+/* Footer */
+footer p {
     text-align: center;
+}
+
+/* Hide the button */
+button.hidden {
+    visibility: hidden; /* Hides the button but keeps its space on the page */
+    pointer-events: none; /* Prevents clicks */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chart-wrapper {
+        width: 90%; /* Full width on small screens */
+    }
+
+    header > h1 {
+        font-size: 1em;
+    }
+
+    .chart-container h3 {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 490px) {
+    #infoPageButtons {
+        height: 6em;
+    }
+
+    #infoPageButtons > button:first-child {
+        height: 2.5em;
+    }
+
+    #infoPageButtons > button:last-child {
+        top: 5em;
+        left: auto;
+        right: auto;
+    }
 }
