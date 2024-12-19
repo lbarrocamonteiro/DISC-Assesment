@@ -5,10 +5,20 @@ function getRandomElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function resetLocalStorage() {
+function resetLocalStorage(event) {
+    // Impede o comportamento padrão do botão
+    if (event) {
+        event.preventDefault();
+    }
+
+    // Remove itens específicos do localStorage
     localStorage.removeItem('userData');
     localStorage.removeItem('responses');
     localStorage.removeItem('page');
+
+    // Opcional: Atualize a página ou limpe os campos do formulário
+    // alert('Respostas limpas com sucesso!');
+    location.reload();
 }
 
 function testGenerateReport() {

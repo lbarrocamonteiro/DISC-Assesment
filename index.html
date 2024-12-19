@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@latest"></script>
     <script type="module" src="script/main.js"></script>
+    <script type="module" src="script/tests.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
@@ -41,7 +42,7 @@
                 </fieldset>
                 <div id="infoPageButtons">
                     <button type="submit">Iniciar Assessment</button>
-                    <button onclick=window.resetLocalStorage>Limpar Respostas</button>
+                    <button type="button" onclick="resetLocalStorage(event)">Limpar Respostas</button>
                 </div>
             </form>
             
